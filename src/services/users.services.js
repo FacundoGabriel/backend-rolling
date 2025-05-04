@@ -1,5 +1,6 @@
 const UserModel = require("../model/users.model");
 const argon = require("argon2");
+const jwt = require("jsonwebtoken");
 
 const registerUserDB = async (body) => {
   try {
@@ -48,21 +49,29 @@ const loginUserDB = async (body) => {
       body.password
     );
 
-    if (!verifyPassword) {
-      return {
-        msg: "ERROR. El usuario y/o contraseña incorrectas.",
-        statusCode: 401,
-      };
-    }
+    if (verifyPassword) {
+        const payload = {
+          idUser: userExists._id,
+          statusUser: userExists.status,
+        };
+  
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+  
+        return {
+          msg: "Usuario logueado correctamente",
+          token,
+          statusCode: 200,
+        };
+      } else {
+        return {
+          msg: "ERROR. El usuario y/o contraseña incorrectas.",
+          statusCode: 401,
+        };
+      }
 
-    return {
-      msg: "Usuario logueado correctamente",
-      statusCode: 200,
-    };
   } catch (error) {
-    console.log(error)
     return {
-      msg: "No se pudo iniciar sesion",
+      error,
       statusCode: 500,
     };
   }

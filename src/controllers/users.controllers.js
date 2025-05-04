@@ -12,9 +12,9 @@ const registerUser = async(req, res)=>{
 
 
 const loginUser = async(req, res)=>{
-   const { msg, statusCode, error } = await loginUserDB(req.body)
+   const { msg, token, statusCode, error } = await loginUserDB(req.body)
     try {
-        res.status(statusCode).json({msg})
+        res.status(statusCode).json({msg, token})
     } catch {
         res.status(statusCode).json({error})
     }
