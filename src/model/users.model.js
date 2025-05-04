@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose')
-const generarTokenHabilitar = require('../helpers/generarTokenCuenta')
 
-const UsuariosSchema = new Schema({
-    nombreUsuario: {
+
+const UserSchema = new Schema({
+    userName: {
         type: String,
         trim: true,
         required: true,
@@ -11,26 +11,26 @@ const UsuariosSchema = new Schema({
         maxLength: 30,
         minLength: 3
     },
-    emailUsuario: {
+    userEmail: {
         type: String,
         match: [/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,"Formato de email incorrecto"],
         unique: true
     },
-    contrasenia: {
+    password: {
         type: String,
         minLength: [8, 'Limite minimo 8 caracteres']
     },
-    rol: {
+    role: {
         type: String,
-        enum: ['usuario', 'admin'],
-        default: 'usuario'
+        enum: ['user', 'admin'],
+        default: 'user'
     },
-    estado:{
+    status:{
         type: Boolean,
         default: false
     }
 })
 
-const UsuariosModel = model('usuarios', UsuariosSchema)
+const UserModel = model('usuarios', UserSchema)
 
-module.exports = UsuariosModel
+module.exports = UserModel
