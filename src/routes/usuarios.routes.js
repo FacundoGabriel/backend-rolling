@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const { registerUser, loginUser } = require('../controllers/usuarios.controllers')
 const router = Router()
 
 router.post('/register', registerUser)
